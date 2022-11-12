@@ -35,6 +35,55 @@ void Trie::insert(std::string str) {
   ourNode->is_finished = true;
 }
 
+void Trie::bfs(std::function<void(Node *&node)> func) {
+
+  Node *current{this->root};
+  std::vector<Node *> inProcess;
+  // inProcess.push_back(current);
+
+  for (size_t i = 0; i < current->children.size(); i++) {
+    inProcess.push_back(current->children[i]);
+  }
+
+  for (size_t j = 0; j < inProcess.size(); j++) {
+    // visited.push_back(inProcess[j]);
+    for (size_t k = 0; k < inProcess[j]->children.size(); k++) {
+      inProcess.push_back(inProcess[j]->children[k]);
+    }
+  }
+
+  inProcess.insert(inProcess.begin(), current);
+  for (auto i : inProcess) {
+    func(i);
+  }
+}
+
+bool Trie::search(std::string query) {
+  Node *current{this->root};
+  bool FlagExist{true};
+  for (size_t i = 0; i < query.size(); i++) {
+    bool FlagExistInChildren{false};
+    size_t indIfExist;
+    for (size_t j = 0; j < current->children.size(); j++) {
+      if (query[i] == current->children[j]->data) {
+        FlagExistInChildren = true;
+        break;
+        indIfExist = j;
+      }
+    }
+    if (FlagExistInChildren == false) {
+      return false;
+    } else {
+      current = current->children[indIfExist];
+    }
+  }
+  if (current->is_finished == true) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 // Trie::~Trie() {
 //   if (root == nullptr)
 //     return;

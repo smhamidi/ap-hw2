@@ -27,8 +27,8 @@ public:
   // Trie(Trie &&trie);
 
   void insert(std::string str);
-  // bool search(std::string query);
-  // void bfs(std::function<void(Node *&node)> func);
+  bool search(std::string query);
+  void bfs(std::function<void(Node *&node)> func);
   // void operator=(const Trie &trie);
   // void operator=(Trie &&trie);
 
