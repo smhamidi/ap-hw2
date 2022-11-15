@@ -24,15 +24,15 @@ public:
 
   Trie();
   Trie(std::initializer_list<std::string> args);
-  ~Trie();
   Trie(const Trie &trie);
-  // Trie(Trie &&trie);
+  Trie(Trie &&trie);
+  ~Trie();
 
   void insert(std::string str);
   bool search(std::string query);
   void bfs(std::function<void(Node *&node)> func);
-  // void operator=(const Trie &trie);
-  // void operator=(Trie &&trie);
+  void operator=(const Trie &trie);
+  void operator=(Trie &&trie);
 
 private:
 };

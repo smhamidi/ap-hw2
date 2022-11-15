@@ -46,6 +46,11 @@ Trie::Trie(const Trie &trie) {
     }
   }
 }
+Trie::Trie(Trie &&trie) {
+  root = new Node();
+  this->root = trie.root;
+  trie.root = nullptr;
+}
 
 void Trie::insert(std::string str) {
 
@@ -120,4 +125,33 @@ bool Trie::search(std::string query) {
   } else {
     return false;
   }
+}
+
+void Trie::operator=(const Trie &trie) {
+  Node *primary{trie.root};
+  Node *copyVersion{this->root};
+
+  std::vector<Node *> primaryInProcess;
+  std::vector<Node *> copyInProcess;
+  for (auto i : primary->children) {
+    primaryInProcess.push_back(i);
+    Node *childToPush = new Node{i->data, i->is_finished};
+    copyVersion->children.push_back(childToPush);
+    copyInProcess.push_back(childToPush);
+  }
+  for (size_t i = 0; i < primaryInProcess.size(); i++) {
+    primary = primaryInProcess[i];
+    copyVersion = copyInProcess[i];
+    for (auto i : primary->children) {
+      primaryInProcess.push_back(i);
+      Node *childToPush = new Node{i->data, i->is_finished};
+      copyVersion->children.push_back(childToPush);
+      copyInProcess.push_back(childToPush);
+    }
+  }
+}
+
+void Trie::operator=(Trie &&trie) {
+  this->root = trie.root;
+  trie.root = nullptr;
 }
